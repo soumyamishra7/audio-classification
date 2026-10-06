@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+uploads/*
+!uploads/.gitkeep
+new_samples/
+*.zip
+speaker_Dataset-20260925T095840Z-1-001/
+speaker_Dataset-20260924T151209Z-1-001/
+ESC-50-master/

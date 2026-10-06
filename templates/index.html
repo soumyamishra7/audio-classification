@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audio Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body data-theme="dark">
+
+<div class="sidebar">
+    <div class="brand">
+        <div class="brand-icon"><i data-lucide="audio-lines"></i></div>
+        <div class="brand-text">Audio Intelligence<span>MFCC &middot; Neural Net</span></div>
+    </div>
+
+    <div class="nav-section-label">Tools</div>
+    <div class="nav-item active" data-page="sound">
+        <i data-lucide="waves"></i> Sound Classifier
+    </div>
+    <div class="nav-item" data-page="speaker">
+        <i data-lucide="user-round-search"></i> Speaker ID
+    </div>
+
+    <div class="sidebar-footer">
+        <div class="theme-toggle" id="themeToggle">
+            <span id="themeLabel">Dark mode</span>
+            <i data-lucide="moon" id="themeIcon"></i>
+        </div>
+        <div class="credit"><b>Powered by</b><br>TensorFlow &middot; Librosa &middot; Flask</div>
+    </div>
+</div>
+
+<div class="main">
+
+    <div class="tool-content active" id="page-sound">
+        <div class="page-header">
+            <div class="page-header-row">
+           <h1>Sound & Speaker Classifier</h1>
+<span class="badge"><i data-lucide="check-circle-2"></i>~90% test accuracy</span>
+</div>
+<p>Identifies 10 nature/animal sounds or any of 12 known speakers, from a short audio clip</p>    
+        </div>
+
+        <div class="panel">
+            <div class="tabs" data-tool="sound">
+                <button class="tab-btn active" data-tab="upload"><i data-lucide="upload"></i>Upload File</button>
+                <button class="tab-btn" data-tab="record"><i data-lucide="mic"></i>Record Audio</button>
+            </div>
+
+            <div class="tab-panel active" data-panel="upload">
+                <div class="dropzone" data-dropzone>
+                    <i data-lucide="file-audio"></i>
+                    <p>Drag & drop an audio file<br>or click to browse</p>
+                    <div class="formats">WAV &middot; MP3 &middot; FLAC &middot; OGG &middot; M4A</div>
+                </div>
+                <input type="file" data-file-input accept="audio/*">
+                <div class="file-chip" data-file-chip>
+                    <span data-file-chip-name></span>
+                    <span class="remove" data-file-chip-remove>&times;</span>
+                </div>
+            </div>
+
+            <div class="tab-panel" data-panel="record">
+                <div class="record-zone">
+                    <div class="waveform" data-waveform></div>
+                    <button class="mic-btn" data-mic-btn><i data-lucide="mic"></i></button>
+                    <div class="record-status" data-record-status>Tap to start recording</div>
+                    <div class="record-timer" data-record-timer>00:00</div>
+                    <audio class="preview" data-record-preview controls style="display:none;"></audio>
+                    <a class="download-link" data-download-link><i data-lucide="download"></i>Download this recording</a>
+                </div>
+            </div>
+
+            <button class="primary" data-submit-btn disabled>
+                <i data-lucide="sparkles"></i>
+                <span data-btn-text>Classify Sound</span>
+                <div class="spinner" data-spinner></div>
+            </button>
+
+            <div class="result" data-result>
+                <div class="result-top">
+                    <div>
+                        <div class="result-label">Prediction</div>
+                        <div class="result-class" data-predicted-class></div>
+                    </div>
+                    <div class="ring-wrap">
+                        <svg class="ring-svg" width="56" height="56" viewBox="0 0 56 56">
+                            <circle class="ring-bg" cx="28" cy="28" r="24"></circle>
+                            <circle class="ring-fill" data-ring-fill cx="28" cy="28" r="24"></circle>
+                        </svg>
+                        <div class="ring-text" data-ring-text></div>
+                    </div>
+                </div>
+                <div class="threshold-msg" data-threshold-msg></div>
+                <div class="top-preds">
+                    <div class="top-preds-label">Top Predictions</div>
+                    <div data-pred-list></div>
+                </div>
+            </div>
+
+            <div class="history-panel">
+                <div class="history-title">Recent Predictions</div>
+                <div class="history-list" data-history-list>
+                    <div class="history-empty">Nothing classified yet this session.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tool-content" id="page-speaker">
+        <div class="page-header">
+            <div class="page-header-row">
+                <h1>Sound & Speaker Classifier</h1>
+<span class="badge"><i data-lucide="check-circle-2"></i>~90% test accuracy</span>
+</div>
+<p>Identifies 10 nature/animal sounds or any of 12 known speakers, from a short audio clip</p>
+        </div>
+
+        <div class="panel">
+            <div class="tabs" data-tool="speaker">
+                <button class="tab-btn active" data-tab="upload"><i data-lucide="upload"></i>Upload File</button>
+                <button class="tab-btn" data-tab="record"><i data-lucide="mic"></i>Record Audio</button>
+            </div>
+
+            <div class="tab-panel active" data-panel="upload">
+                <div class="dropzone" data-dropzone>
+                    <i data-lucide="file-audio"></i>
+                    <p>Drag & drop an audio file<br>or click to browse</p>
+                    <div class="formats">WAV &middot; MP3 &middot; OGG &middot; M4A</div>
+                </div>
+                <input type="file" data-file-input accept="audio/*">
+                <div class="file-chip" data-file-chip>
+                    <span data-file-chip-name></span>
+                    <span class="remove" data-file-chip-remove>&times;</span>
+                </div>
+            </div>
+
+            <div class="tab-panel" data-panel="record">
+                <div class="record-zone">
+                    <div class="waveform" data-waveform></div>
+                    <button class="mic-btn" data-mic-btn><i data-lucide="mic"></i></button>
+                    <div class="record-status" data-record-status>Tap to start recording</div>
+                    <div class="record-timer" data-record-timer>00:00</div>
+                    <audio class="preview" data-record-preview controls style="display:none;"></audio>
+                    <a class="download-link" data-download-link><i data-lucide="download"></i>Download this recording</a>
+                    <div style="margin-top:14px; display:flex; gap:8px; align-items:center; justify-content:center;">
+                        <input type="text" id="speakerNameInput" placeholder="Speaker name" style="padding:8px 10px; border-radius:8px; border:1px solid var(--border); background:var(--panel-2); color:var(--text);">
+                        <button id="saveSampleBtn" class="primary" style="width:auto; margin-top:0; padding:10px 16px;">Save Sample</button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="primary" data-submit-btn disabled>
+                <i data-lucide="scan-face"></i>
+                <span data-btn-text>Identify Speaker</span>
+                <div class="spinner" data-spinner></div>
+            </button>
+
+            <div class="result" data-result>
+                <div class="result-top">
+                    <div>
+                        <div class="result-label">Identified As</div>
+                        <div class="result-class" data-predicted-class></div>
+                    </div>
+                    <div class="ring-wrap">
+                        <svg class="ring-svg" width="56" height="56" viewBox="0 0 56 56">
+                            <circle class="ring-bg" cx="28" cy="28" r="24"></circle>
+                            <circle class="ring-fill" data-ring-fill cx="28" cy="28" r="24"></circle>
+                        </svg>
+                        <div class="ring-text" data-ring-text></div>
+                    </div>
+                </div>
+                <div class="top-preds">
+                    <div class="top-preds-label">All Speakers</div>
+                    <div data-pred-list></div>
+                </div>
+            </div>
+
+            <div class="history-panel">
+                <div class="history-title">Recent Predictions</div>
+                <div class="history-list" data-history-list>
+                    <div class="history-empty">Nothing identified yet this session.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
